@@ -12,7 +12,7 @@ public class SelectDoc {
     String docsByPrices="//span[@class=\"price-amount\" and  number(translate(.,'$', '')) > %s  and  number(translate(.,'$', '')) " +
             "< %s]//parent::div//parent::div//child::div[@class=\"left\"]",
 
-    freeDocs=" //span[contains(text(),'Free')]//parent::div//parent::div//child::div[@class=\"left\" and contains(text(),'%s')]";
+    freeDocs=" //span[contains(text(),'%s')]//parent::div//parent::div//child::div[@class=\"left\" and contains(text(),'%s')]";
     ElementActions act;
 
     public SelectDoc(WebDriver driver)
@@ -22,11 +22,11 @@ public class SelectDoc {
 
     }
     public List<WebElement> getFreeDocs(){
-        By elements=By.xpath(String.format(freeDocs,""));
+        By elements=By.xpath(String.format(freeDocs,"Free",""));
          return act.getElements(elements);
     }
     public String freeDocText(String text){
-        By elements=By.xpath(String.format(freeDocs,text));
+        By elements=By.xpath(String.format(freeDocs,"Free",text));
         return act.getElementText(elements);
     }
     public List<WebElement> getDocsWithPrice(String minPrice,String maxPrice){
