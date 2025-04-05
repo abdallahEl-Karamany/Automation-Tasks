@@ -19,7 +19,8 @@ public class SelectDocPageTest extends HomePageTest {
 
     @Test
     public void pricedDocsTest() {
-        Assert.assertEquals(selectDoc.getDocsWithPrice("30", "60"), 1, "Count of priced Docs Expected to be 1");
+        selectDoc = home.clickElement();
+        Assert.assertEquals(selectDoc.getDocsWithPrice("30", "60"), 2, "Count of priced Docs Expected to be 1");
         textList = selectDoc.getPricedText("30", "60");
         Assert.assertTrue(textList.contains("Send a Warning"), "Expected Text is Send a Warning");
     }

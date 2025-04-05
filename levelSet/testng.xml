@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="dummy suite">
-    <test name="E2E">
+<suite name="dummy suite" parallel="tests" thread-count="2">
+    <listeners>
+        <listener class-name="Wraperes.ExtentReporterNG"/>
+    </listeners>
+    <test name="E2E1">
         <classes>
-            <class name="SelectDocPageTest"/>
+            <class name="SelectDocPageTest">
+                <methods>
+                    <exclude name="pricedDocsTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="E2E2">
+        <classes>
+            <class name="SelectDocPageTest">
+                <methods>
+                    <exclude name="freeDocTest"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>
