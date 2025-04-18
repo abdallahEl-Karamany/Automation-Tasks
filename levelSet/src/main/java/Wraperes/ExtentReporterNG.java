@@ -4,17 +4,25 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebElement;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import java.io.File;
+import java.io.IOException;
+
+import static Actions.BrowserActions.driver;
+
 public class ExtentReporterNG implements ITestListener {
     ThreadLocal<ExtentTest> test = new ThreadLocal<>();
 
-
-
     public  ExtentReports getReportObject(){
-            String reportPath=System.getProperty("user.dir")+"\\reports\\index.html";
+            String reportPath=System.getProperty("user.dir")+"\\reports\\Summary.html";
             ExtentSparkReporter reporter=new ExtentSparkReporter(reportPath);
             reporter.config().setReportName("HTML Report");
             reporter.config().setDocumentTitle("Test Result");
@@ -41,12 +49,24 @@ public class ExtentReporterNG implements ITestListener {
     public void onTestFailure(ITestResult result) {
         test.get().log(Status.FAIL, "Test Failed: " + result.getThrowable().getMessage());
 
-        //test.addScreenCaptureFromPath();
+        TakesScreenshot ts=(TakesScreenshot)driver.get();
+        File source=ts.getScreenshotAs(OutputType.FILE);
+        String tcName= result.getName();
+        String filePath=System.getProperty("user.dir")+"\\reports\\" +tcName + ".png";
+
+        File file=new File(System.getProperty("user.dir")+"\\reports\\" + tcName + ".png");
+        try {
+            FileUtils.copyFile(source,file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        test.get().addScreenCaptureFromPath(filePath,result.getMethod().getMethodName());
+
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        test.get().log(Status.SKIP, "Test Skipped: " + result.getName());
+        test.get().log(Status.SKIP, "Test Skipped: " + result.getThrowable().getMessage());
     }
 
     @Override
