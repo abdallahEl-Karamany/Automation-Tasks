@@ -15,7 +15,7 @@ public class HomePageTest {
 
     @BeforeTest
     public void homeTest() {
-        BrowserActions.webDriverInit();
+        BrowserActions.webDriverInit(BrowserActions.browser.chrome);
         BrowserActions.windowMaximize();
         home = new HomePage();
         home.homeNavigation();
